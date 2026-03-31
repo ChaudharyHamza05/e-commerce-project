@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Product</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+        }
+
+        .container {
+            width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        img {
+            margin-top: 10px;
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add Product</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ product.as_p }}
+
+        <!-- Error messages -->
+        {% if product.errors %}
+            <div class="error">
+                {{ product.errors }}
+            </div>
+        {% endif %}
+
+        <button type="submit">Save Product</button>
+    </form>
+
+    <br>
+    <a href="{% url 'home' %}">← Back to Home</a>
+</div>
+
+</body>
+</html>
