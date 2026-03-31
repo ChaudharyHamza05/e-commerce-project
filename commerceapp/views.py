@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.views import View
@@ -42,7 +42,7 @@ class LogoutView(View):
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request):
-        return  render(request, 'home.html')
+        return  render(request, 'home.html', {"user": request.user})
 
 
 #create products view
@@ -69,3 +69,25 @@ class productdetail(LoginRequiredMixin, View):
     def get(self, request, id):
         product = ProductModel.objects.get(id=id)
         return render(request, 'productdetails.html', {'product': product})
+
+from django.shortcuts import get_object_or_404
+
+class UpdateProduct(LoginRequiredMixin, View):
+    def get(self, request, id):
+        product = ProductModel.objects.get(id=id, user=request.user)
+        form = ProductForm(instance=product)
+        return render(request, 'updateproduct.html', {'form': form})
+
+    def post(self, request, id):
+        product = ProductModel.objects.get(id=id, user=request.user)
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('productdetail', id=id)
+        return render(request, 'updateproduct.html', {'product': product, 'form': form})
+
+class DeleteProduct(LoginRequiredMixin, View):
+    def get(self, request, id):
+        product = ProductModel.objects.get(id=id, user=request.user)
+        product.delete()
+        return redirect('productlist')

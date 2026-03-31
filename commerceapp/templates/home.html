@@ -2,53 +2,131 @@
 <html>
 <head>
     <title>Home</title>
+
     <style>
         body {
             margin: 0;
-            font-family: Arial;
-            background: #f4f6f9;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #eef2f7, #dfe9f3);
         }
 
-        /* Navbar */
+        /* NAVBAR */
         .navbar {
-            background: #2c3e50;
-            padding: 15px;
+            background: #111827;
+            padding: 15px 30px;
             color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .navbar strong {
+            font-size: 20px;
+            letter-spacing: 1px;
         }
 
         .navbar a {
             color: white;
             text-decoration: none;
-            margin-left: 15px;
+            margin-left: 18px;
+            font-weight: 500;
+            transition: 0.3s;
         }
 
-        /* Main container */
+        .navbar a:hover {
+            color: #38bdf8;
+        }
+
+        .navbar span {
+            margin-right: 15px;
+            color: #d1d5db;
+        }
+
+        /* MAIN */
         .container {
-            padding: 30px;
+            padding: 40px;
+            width: 80%;
+            margin: auto;
         }
 
+        /* CARDS */
         .card {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            margin-bottom: 25px;
+            transition: 0.3s;
         }
 
-        h2 {
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        h2, h3 {
             margin-top: 0;
+            color: #111827;
         }
 
+        p {
+            color: #4b5563;
+        }
+
+        /* BUTTONS */
         .btn {
-            padding: 10px 15px;
-            background: #3498db;
+            display: inline-block;
+            padding: 12px 18px;
+            margin-right: 10px;
+            background: #2563eb;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: 0.3s;
         }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #10b981;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+        }
+
+        /* GRID QUICK STATS (optional style) */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -56,8 +134,9 @@
 <!-- Navbar -->
 <div class="navbar">
     <div>
-        <strong>My App</strong>
+        <strong>My Store Dashboard</strong>
     </div>
+
     <div>
         <span>Welcome, {{ request.user.username }}</span>
         <a href="{% url 'logout' %}">Logout</a>
@@ -67,15 +146,24 @@
 <!-- Content -->
 <div class="container">
 
+    <!-- Welcome Card -->
     <div class="card">
-        <h2>Dashboard</h2>
-        <p>You are successfully logged in 🎉</p>
+        <h2>👋 Welcome Back</h2>
+        <p>Manage your products, track updates, and grow your store from here.</p>
+
+        <div class="stats">
+            <div class="stat-box">📦 Products</div>
+            <div class="stat-box">💰 Sales</div>
+            <div class="stat-box">👤 Users</div>
+        </div>
     </div>
 
+    <!-- Actions -->
     <div class="card">
-        <h3>Quick Actions</h3>
-        <a href="{% url 'createproduct' %}" class="btn">Add Product</a>
-        <a href="{% url 'productlist' %}" class="btn">View Products</a>
+        <h3>⚡ Quick Actions</h3>
+
+        <a href="{% url 'createproduct' %}" class="btn">➕ Add Product</a>
+        <a href="{% url 'productlist' %}" class="btn btn-secondary">📦 View Products</a>
     </div>
 
 </div>
