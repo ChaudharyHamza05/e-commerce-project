@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sale Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f4f6f9;">
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h3 class="text-center mb-4">🛍️ Sale Product</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-success w-100">
+                Create Sale
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Auto subtotal -->
+<script>
+    const price = document.querySelector('#id_price');
+    const qty = document.querySelector('#id_quantity');
+    const subtotal = document.querySelector('#id_subtotal');
+
+    function calculate() {
+        subtotal.value = (price.value * qty.value) || 0;
+    }
+
+    price.addEventListener('input', calculate);
+    qty.addEventListener('input', calculate);
+</script>
+
+</body>
+</html>
