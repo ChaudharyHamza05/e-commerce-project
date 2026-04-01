@@ -97,10 +97,6 @@ class DeleteProduct(LoginRequiredMixin, View):
 
 #=====================================================================================
 
-from django.views import View
-from django.shortcuts import render, redirect
-from django.db import transaction
-
 class Purchaseview(View):
     def get(self, request):
         form = PurchaseForm()
@@ -112,13 +108,8 @@ class Purchaseview(View):
         if form.is_valid():
             purchase = form.save(commit=False)
             purchase.user = request.user
-
-            # ✅ Calculate subtotal
             purchase.subtotal = purchase.price * purchase.quantity
-
             product = purchase.product
-
-            # ✅ Safe transaction
             with transaction.atomic():
                 product.stock += purchase.quantity
                 product.save()
@@ -142,13 +133,8 @@ class Saleview(View):
         if form.is_valid():
             sale = form.save(commit=False)
             sale.user = request.user
-
-            # ✅ Calculate subtotal
             sale.subtotal = sale.price * sale.quantity
-
             product = sale.product
-
-            # ✅ Stock check + transaction
             if product.stock >= sale.quantity:
                 with transaction.atomic():
                     product.stock -= sale.quantity
@@ -157,7 +143,7 @@ class Saleview(View):
 
                 return redirect('home')
             else:
-                return HttpResponse("❌ Out of Stock!")
+                return HttpResponse("Out of Stock!")
 
         return render(request, 'saleproduct.html', {'form': form})
 
